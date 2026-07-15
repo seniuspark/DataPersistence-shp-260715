@@ -99,6 +99,8 @@
   <ItemGroup>
     <ClCompile Include="SampleSerializationTests.cpp" />
     <ClCompile Include="OrderSerializationTests.cpp" />
+    <ClCompile Include="SampleRepositoryTests.cpp" />
+    <ClCompile Include="OrderRepositoryTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

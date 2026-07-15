@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Order.h" />
+    <ClInclude Include="SampleRepository.h" />
+    <ClInclude Include="OrderRepository.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
