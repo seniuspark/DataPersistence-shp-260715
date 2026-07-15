@@ -89,12 +89,29 @@ private:
             return {};
         }
 
+        std::string content((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+        if (content.empty()) {
+            return {};
+        }
+
         nlohmann::json json;
-        input >> json;
+        try {
+            json = nlohmann::json::parse(content);
+        } catch (const nlohmann::json::parse_error&) {
+            return {};
+        }
+
+        if (!json.is_object() || !json.contains("orders") || !json.at("orders").is_array()) {
+            return {};
+        }
 
         std::vector<Order> orders;
         for (const auto& item : json.at("orders")) {
-            orders.push_back(OrderFromJson(item));
+            try {
+                orders.push_back(OrderFromJson(item));
+            } catch (const nlohmann::json::exception& e) {
+                std::cerr << "Skipping invalid order entry: " << e.what() << std::endl;
+            }
         }
         return orders;
     }

@@ -103,6 +103,7 @@
     <ClCompile Include="OrderRepositoryTests.cpp" />
     <ClCompile Include="PersistenceReloadTests.cpp" />
     <ClCompile Include="UpdateDeleteTests.cpp" />
+    <ClCompile Include="CorruptedJsonTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
