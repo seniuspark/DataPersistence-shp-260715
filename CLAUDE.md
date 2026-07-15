@@ -1,0 +1,47 @@
+# 데이터 영속성(JSON) PoC — CLAUDE.md
+
+이 디렉토리는 **JSON 파일 기반 데이터 영속성**을 검증하는 PoC다.
+독립된 Git Repository로 제출한다 (`DataPersistence-영문이름-사번`).
+전체 배경/도메인 모델은 상위 `../CLAUDE.md`를 참고.
+
+## 목표
+
+- 애플리케이션을 재시작해도 데이터가 유지되는 저장 구조를 구현한다.
+- 시료(Sample)와 주문(Order) 각각에 대해 CRUD가 모두 동작해야 한다
+  (Create/Read/Update/Delete — 주문의 Delete는 실제 요구사항에 없을 수 있으나,
+  Repository 계층 자체의 완전성을 위해 인터페이스에는 포함해 테스트한다).
+- 저장 포맷은 JSON. 외부 JSON 라이브러리(NuGet으로 설치 가능한 것, 예:
+  nlohmann-json 계열)를 사용하거나 직접 파서를 구현해도 되지만, 직접 구현할
+  경우에도 반드시 gtest로 파싱/직렬화 왕복(round-trip)을 검증한다.
+
+## 설계 방향
+
+- Repository 패턴: `SampleRepository`, `OrderRepository` 등으로 저장소 접근을
+  캡슐화하고, 파일 I/O는 이 계층에만 존재하게 한다.
+- 저장 파일 예시: `data/samples.json`, `data/orders.json` (경로는 자유, 단 상대경로로
+  실행 위치에 종속되지 않도록 처리).
+- 동시성은 고려하지 않아도 된다 (단일 프로세스, 콘솔 앱).
+- 파일이 없을 때(최초 실행)는 빈 컬렉션으로 시작하고, 손상된 JSON을 만났을 때의
+  동작(예외 vs 빈 값)을 명확히 정하고 테스트로 고정한다.
+
+## 기술 스택
+
+- C++20, Visual Studio(.vcxproj), x64/x86
+- GoogleTest는 NuGet으로 설치
+- JSON 처리 라이브러리도 NuGet 패키지로 관리 (직접 구현 시에는 해당 없음)
+
+## TDD 진행 방식
+
+1. 저장 안 된 상태에서 조회 시 빈 목록을 반환하는지 테스트한다.
+2. 엔티티를 저장(Create) 후 같은 Repository 인스턴스에서 조회(Read)되는지 테스트한다.
+3. 파일에 저장 후, **새 Repository 인스턴스**(재시작을 흉내)로 다시 로드했을 때
+   동일 데이터가 조회되는지 테스트한다 — 이것이 영속성 검증의 핵심 테스트다.
+4. Update/Delete가 파일에 반영되는지 각각 테스트한다.
+5. 위 테스트들을 통과하는 최소 구현을 작성하고 리팩터링한다.
+
+## 범위 밖 (다른 PoC의 책임)
+
+- 콘솔 메뉴/화면 흐름은 이 PoC의 관심사가 아니다. gtest와 필요 시 간단한 `main`의
+  smoke test 정도로 충분하다.
+- 이 PoC에서 검증한 Repository 인터페이스와 JSON 스키마를 `Main/`과 `Monitor/`,
+  `Dummy/`가 공유하는 데이터 포맷의 기준으로 삼는다.
