@@ -102,6 +102,7 @@
     <ClCompile Include="SampleRepositoryTests.cpp" />
     <ClCompile Include="OrderRepositoryTests.cpp" />
     <ClCompile Include="PersistenceReloadTests.cpp" />
+    <ClCompile Include="UpdateDeleteTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

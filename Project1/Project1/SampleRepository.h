@@ -1,7 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -37,6 +39,30 @@ public:
         }
         samples.push_back(sample);
         SaveAll(samples);
+    }
+
+    bool Update(const Sample& sample) {
+        std::vector<Sample> samples = LoadFromFile();
+        for (auto& existing : samples) {
+            if (existing.sampleId == sample.sampleId) {
+                existing = sample;
+                SaveAll(samples);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Delete(const std::string& sampleId) {
+        std::vector<Sample> samples = LoadFromFile();
+        auto it = std::find_if(samples.begin(), samples.end(),
+                                [&](const Sample& sample) { return sample.sampleId == sampleId; });
+        if (it == samples.end()) {
+            return false;
+        }
+        samples.erase(it);
+        SaveAll(samples);
+        return true;
     }
 
 private:
