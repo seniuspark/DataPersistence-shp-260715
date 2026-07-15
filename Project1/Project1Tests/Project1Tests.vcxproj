@@ -101,6 +101,7 @@
     <ClCompile Include="OrderSerializationTests.cpp" />
     <ClCompile Include="SampleRepositoryTests.cpp" />
     <ClCompile Include="OrderRepositoryTests.cpp" />
+    <ClCompile Include="PersistenceReloadTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
