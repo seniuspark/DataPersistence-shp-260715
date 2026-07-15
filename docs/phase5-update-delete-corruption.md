@@ -72,5 +72,5 @@ Repository의 CRUD를 완성한다(Update/Delete)는 물론, 손상되거나 예
   (Phase 3: Create/Read, Phase 5: Update/Delete)
 - 재시작 시뮬레이션(새 Repository 인스턴스) 재로딩 테스트가 통과함 (Phase 4)
 - 손상/누락 파일에 대한 동작이 정의되고 테스트됨 (Phase 5)
-- 확정된 JSON 스키마(Phase 1)를 `Json/CLAUDE.md` 또는 별도 요약에 남겨
-  `Monitor`/`Dummy`/`Main`이 참고할 수 있게 한다
+- 확정된 JSON 스키마(Phase 1)를 이 저장소의 `CLAUDE.md` 또는 별도 요약에 남겨,
+  다른 PoC(`Monitor`/`Dummy`/`Main`)가 참고할 수 있게 한다
